@@ -36,7 +36,9 @@ BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background
 # Instead, we will be inheriting this class's properties to build our enemy as well as Player Ships.
 # This is because all the ships in this game will have properties that are mostly common.
 class Ship:
-    COOLDOWN = FPS * 0.25
+    # Define the cooldown period between consecutive firing of the laser.
+    nos = 4 # Number of shots per second
+    COOLDOWN = FPS / nos
 
     def __init__(self, x, y, health = 100):
         self.x = x
