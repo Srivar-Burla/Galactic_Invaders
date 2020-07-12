@@ -229,31 +229,33 @@ def main():
         clock.tick(FPS)
         redraw_window()
 
-        if (lives <= 0) or (player.health <= 0):
+        if (lives <= 0):
             lost = True
             lost_count += 1
-
-        for enemy in enemies:
-            enemy.move(enemy_velocity)
-            enemy.move_lasers(laser_velocity, player)
-            
-            if random.randrange(0, FPS/prob_enemy_shot) == 1:
-                enemy.shoot()
-
-            if collide(enemy, player):
-                player.health -= 10
-                enemies.remove(enemy)
-            elif enemy.y + enemy.get_dimension()[1]>breadth:
-                lives-=1
-                enemies.remove(enemy)
-
-
 
         if lost:
             if lost_count > FPS * 3:
                 run = False
             else:
                 continue
+
+        for enemy in enemies:
+            enemy.move(enemy_velocity)
+            enemy.move_lasers(laser_velocity, player)
+
+            if random.randrange(0, FPS / prob_enemy_shot) == 1:
+                enemy.shoot()
+
+            if collide(enemy, player):
+                player.health -= 10
+                enemies.remove(enemy)
+            elif enemy.y + enemy.get_dimension()[1] > breadth:
+                lives -= 1
+                enemies.remove(enemy)
+
+            if player.health <=0:
+                lives-=1
+                player.health = player.max_health
 
 
         if len(enemies) == 0:
